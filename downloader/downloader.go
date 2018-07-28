@@ -95,8 +95,15 @@ var ErrNoDL = errors.New("beatmap could not be downloaded")
 
 func (c *Client) getReader(str string) (io.ReadCloser, error) {
 	h := (*http.Client)(c)
+	var uri string
 
-	resp, err := h.Get(fmt.Sprintf("https://%s/d/", downloadHostname) + str)
+	if downloadHostname == "osu.ppy.sh" {
+		uri = fmt.Sprintf("https://%s/beatmapsets/%s/download", downloadHostname, str)
+	} else {
+		uri = fmt.Sprintf("https://%s/d/%s", downloadHostname, str)
+	}
+
+	resp, err := h.Get(uri)
 	if err != nil {
 		return nil, err
 	}

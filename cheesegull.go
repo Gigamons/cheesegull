@@ -95,7 +95,7 @@ func main() {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-	house.MaxSize = 1024 * 1024 * 1024 * (conf.Server.BMCacheSize)
+	house.MaxSize = 1024 * 1024 * 1024 * conf.Server.BMCacheSize
 	house.StartCleaner()
 
 	logger.Debug("Migrate latest Database.")
