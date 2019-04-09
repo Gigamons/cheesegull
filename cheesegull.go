@@ -30,6 +30,7 @@ const searchDSNDocs = `"DSN to use for fulltext searches. ` +
 	`This can be the same as MYSQL_DSN, and cheesegull will still run ` +
 	`successfully, however what happens when search is tried is undefined ` +
 	`behaviour and you should definetely bother to set it up (follow the README).`
+
 // CheeseGull is a webserver that functions as a cache middleman between the
 // official osu! mirrors and requesters of beatmaps, as well as also a cache
 // middleman for beatmaps metadata retrieved from the official osu! API.
@@ -50,18 +51,20 @@ func main() {
 	logger.Info("CheeseGull %s Gigamons Edition.", Version)
 	api.Version = Version
 
+	conf := config.Parse()
+
 	// set up housekeeper
 	house := housekeeper.New()
 	err := house.LoadState()
-		fmt.Println(err)
+	fmt.Println(err)
 	if err != nil {
 		os.Exit(1)
 	}
-	if *removeNonZip {
-	house.MaxSize = uint64(float64(1024*1024*1024) * float64(conf.Server.BMCacheSize))
+	if conf.Server.RemoveNonZip {
+		house.MaxSize = uint64(float64(1024*1024*1024) * float64(conf.Server.BMCacheSize))
 		house.RemoveNonZip()
 	}
-		return
+	return
 	house.StartCleaner()
 	// set up osuapi client
 	logger.Debug("Create new Osu! APIClient")

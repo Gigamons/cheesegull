@@ -52,6 +52,20 @@ func main() {
 	api.Version = Version
 
 	conf := config.Parse()
+
+	// set up housekeeper
+	house := housekeeper.New()
+	err := house.LoadState()
+	fmt.Println(err)
+	if err != nil {
+		os.Exit(1)
+	}
+	if conf.Server.RemoveNonZip {
+		house.MaxSize = uint64(float64(1024*1024*1024) * float64(conf.Server.BMCacheSize))
+		house.RemoveNonZip()
+	}
+	return
+	house.StartCleaner()
 	// set up osuapi client
 	logger.Debug("Create new Osu! APIClient")
 	c := osuapi.NewClient(conf.Osu.APIKey)
@@ -81,24 +95,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	if err = db2.Ping(); err != nil {
-		logger.Error(err.Error())
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	logger.Debug("Create housekeeper")
-	// set up housekeeper
-	house := housekeeper.New()
-	err = house.LoadState()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-	house.MaxSize = uint64(float64(1024*1024*1024) * (conf.Server.BMCacheSize))
-	house.StartCleaner()
-
-	logger.Debug("Migrate latest Database.")
 	// run mysql migrations
 	err = models.RunMigrations(db)
 	if err != nil {

@@ -13,10 +13,11 @@ type Config struct {
 		ShouldDiscover   bool
 		UnrankedBeatmaps bool
 		Website          string
-		BMCacheSize      uint64
+		BMCacheSize      float64
 		Hostname         string
 		Port             int
 		Debug            bool
+		RemoveNonZip     bool
 	}
 	Osu struct {
 		DownloadHostname string // Good for CDN Support.

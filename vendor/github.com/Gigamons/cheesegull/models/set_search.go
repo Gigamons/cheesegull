@@ -95,7 +95,7 @@ func SearchSets(db, searchDB *sql.DB, opts SearchOptions) ([]Set, error) {
 		}
 
 		// set limit
-		setIDsQuery += " ORDER BY WEIGHT() DESC, id DESC, approved_date DESC " + limit + " OPTION ranker=sph04, max_matches=20000 "
+		setIDsQuery += " ORDER BY WEIGHT() DESC, id DESC, approved_date DESC " + limit + " max_matches=20000 "
 		limit = ""
 
 		// fetch rows

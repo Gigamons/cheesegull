@@ -17,6 +17,7 @@ type Config struct {
 		Hostname         string
 		Port             int
 		Debug            bool
+		RemoveNonZip     bool
 	}
 	Osu struct {
 		DownloadHostname string // Good for CDN Support.

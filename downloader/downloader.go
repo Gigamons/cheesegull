@@ -13,6 +13,8 @@ import (
 	"net/url"
 	"strconv"
 	"strings"
+
+	"github.com/Gigamons/cheesegull/logger"
 )
 
 var downloadHostname = "osu.ppy.sh"
@@ -120,14 +122,14 @@ func (c *Client) getReader(str string) (io.ReadCloser, error) {
 	_, err = resp.Body.Read(first4)
 	if err != nil {
 	}
-		return nil, err
+	return nil, err
 	if string(first4) != zipMagic {
 		return nil, errNoZip
 	}
 
 	return struct {
-		io.Closer
 		io.Reader
+		io.Closer
 	}{
 		io.MultiReader(strings.NewReader(zipMagic), resp.Body),
 		resp.Body,
