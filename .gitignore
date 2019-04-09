@@ -1,6 +1,7 @@
 /cheesegull
 /data/*
 !/data/.gitkeep
-config.json
-gomon_spawn
 dist/
+gomon_spawn
+config.json
+/cgbin.db
