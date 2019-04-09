@@ -60,11 +60,11 @@ func main() {
 	if err != nil {
 		os.Exit(1)
 	}
+	house.MaxSize = uint64(float64(1024*1024*1024) * float64(conf.Server.BMCacheSize))
 	if conf.Server.RemoveNonZip {
-		house.MaxSize = uint64(float64(1024*1024*1024) * float64(conf.Server.BMCacheSize))
 		house.RemoveNonZip()
+		return
 	}
-	return
 	house.StartCleaner()
 	// set up osuapi client
 	logger.Debug("Create new Osu! APIClient")
